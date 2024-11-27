@@ -10,5 +10,6 @@ namespace SnakeGame
     {
         public abstract void Update(float deltatime);
         public abstract void Reset();
+        public abstract void Draw(ConsoleRenderer renderer);
     }
 }

@@ -12,6 +12,9 @@ namespace SnakeGame
     }
     public class SnakeGameplayState : BaseGameState
     {
+        public int fieldWidth;
+        public int fieldHeight;
+        public const char symbolSnake = '■';
         private struct Cell
         {
             public int x;
@@ -38,9 +41,9 @@ namespace SnakeGame
                 case SnakeDir.Right:
                     return new Cell(from.x + 1, from.y);
                 case SnakeDir.Up:
-                    return new Cell(from.x, from.y + 1);
-                case SnakeDir.Down:
                     return new Cell(from.x, from.y - 1);
+                case SnakeDir.Down:
+                    return new Cell(from.x, from.y + 1);
 
             }
             return from;
@@ -48,8 +51,10 @@ namespace SnakeGame
         public override void Reset()
         {
             _body.Clear();
+            int middleY = fieldHeight/2;
+            int middleX = fieldWidth/2;
             currentDir = SnakeDir.Down;
-            _body.Add(new Cell(0, 0));
+            _body.Add(new Cell(middleX, middleY));
             _timeToMove = 0f;
         }
 
@@ -63,10 +68,14 @@ namespace SnakeGame
             Cell nextCell = ShiftTo(head, currentDir);
             _body.RemoveAt(_body.Count - 1);
             _body.Insert(0, nextCell);
-            Console.WriteLine($"{_body[0].x}, {_body[0].y}");
-            
-
-
+        }
+        public override void Draw(ConsoleRenderer renderer)
+        {
+            foreach (var cell in _body)
+            {
+                renderer.SetPixel(cell.x, cell.y, symbolSnake, 0);
+            }
+    
         }
     }
 }
